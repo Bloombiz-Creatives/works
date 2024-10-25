@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import logo from "../assets/games.png";
 import img from '../assets/06.jpg';
+import{useDispatch,useSelector} from "react-redux"
+
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch=useDispatch();
+  const {email,password} = useSelector ((state)=> state.auth);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -25,7 +29,7 @@ const LoginPage = () => {
         <div className="w-full md:w-1/2 p-8">
           {/* Logo Section */}
           <div className="text-center mb-8">
-            <img src={logo} alt="Logo" className="mx-auto w-36" />
+            <img src={logo} alt="Logo"  className="mx-auto w-36" />
           </div>
 
           <h2 className="text-2xl font-bold text-purple-700 text-center">
@@ -132,11 +136,13 @@ const LoginPage = () => {
               className="text-sm text-purple-600 hover:text-purple-500 mt-4 block"
             >
               ← Back to Previous Page
+            
             </a>
           </div>
         </div>
       </div>
     </div>
+   
   );
 };
 
