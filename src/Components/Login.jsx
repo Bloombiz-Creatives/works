@@ -1,16 +1,34 @@
 import React, { useState } from "react";
 import logo from "../assets/games.png";
-import img from '../assets/06.jpg';
-import{useDispatch,useSelector} from "react-redux"
+import img from "../assets/06.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from 'axios';
 
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch=useDispatch();
-  const {email,password} = useSelector ((state)=> state.auth);
+  const dispatch = useDispatch();
+  const { email, password } = useSelector((state) => state.auth);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const handleGoogleLoginSuccess = async (response) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/google_login", {
+        token: response.credential,
+      });
+      localStorage.setItem("token", res.data.access_token);
+      alert("Google Login successful:", res.data);
+    } catch (err) {
+      setError(err.response?.data?.message || "Google Login failed");
+    }
+  };
+
+  const handleGoogleLoginFailure = () => {
+    setError("Google Login failed");
   };
 
   return (
@@ -29,7 +47,7 @@ const LoginPage = () => {
         <div className="w-full md:w-1/2 p-8">
           {/* Logo Section */}
           <div className="text-center mb-8">
-            <img src={logo} alt="Logo"  className="mx-auto w-36" />
+            <img src={logo} alt="Logo" className="mx-auto w-36" />
           </div>
 
           <h2 className="text-2xl font-bold text-purple-700 text-center">
@@ -136,13 +154,18 @@ const LoginPage = () => {
               className="text-sm text-purple-600 hover:text-purple-500 mt-4 block"
             >
               ← Back to Previous Page
-            
             </a>
+
+            <p className="google-button">
+              <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onFailure={handleGoogleLoginFailure}
+              />
+            </p>
           </div>
         </div>
       </div>
     </div>
-   
   );
 };
 

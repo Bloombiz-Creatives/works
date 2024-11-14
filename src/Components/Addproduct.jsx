@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import {
   Search,
-  Eye,
   Edit,
-  Copy,
   Trash,
   Printer,
   ChevronLeft,
@@ -156,10 +154,9 @@ const ProductManagement = () => {
 
   const [products, setProducts] = useState(initialProducts);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPageFirst = 6; // Number of products on the first page
-  const productsPerPageSubsequent = 4; // Number of products on subsequent pages
+  const productsPerPageFirst = 6;
+  const productsPerPageSubsequent = 4;
 
-  // Function to toggle the featured status
   const toggleFeatured = (id) => {
     setProducts(
       products.map((product) =>
@@ -170,7 +167,6 @@ const ProductManagement = () => {
     );
   };
 
-  // Function to toggle today's deal status
   const toggleTodaysDeal = (id) => {
     setProducts(
       products.map((product) =>
@@ -181,16 +177,13 @@ const ProductManagement = () => {
     );
   };
 
-  // Function to handle print
   const handlePrint = () => {
     window.print();
   };
 
-  // Determine the number of products to show based on the current page
   const currentProductsPerPage =
     currentPage === 1 ? productsPerPageFirst : productsPerPageSubsequent;
 
-  // Pagination logic
   const totalPages =
     Math.ceil(
       (currentPage === 1 ? 6 : products.length - 6) / productsPerPageSubsequent
@@ -208,131 +201,136 @@ const ProductManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Main Content */}
-      <div className="p-6">
-        <div className="bg-white rounded-lg shadow-lg h-auto">
+    <div className="min-h-screen bg-gray-100 
+">
+      <div className="p-4 md:p-6">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="p-4">
-            <div className="flex items-center space-x-4 mb-6">
+            <div className="flex flex-col md:flex-row items-center md:space-x-4 mb-6">
               <h1 className="text-xl font-semibold text-black">All Products</h1>
-              {/* Search Input */}
-              <div className="relative">
+              <div className="relative w-full md:w-64">
                 <input
                   type="text"
                   placeholder="Type & Enter"
-                  className="border rounded-md px-4 py-2 w-64" 
+                  className="border rounded-md px-4 py-2 w-full"
                 />
                 <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
               </div>
             </div>
 
-
-             {/* Print Button */}
-             <div className="flex justify-end mb-4">
+            <div className="flex justify-end mb-4">
               <button
                 onClick={handlePrint}
-                className="flex items-center space-x-3 p-3 mx-5  bg-blue-400 text-white hover:bg-blue-600 transition"
+                className="flex items-center space-x-3 p-3 bg-blue-400 text-white hover:bg-blue-600 transition"
               >
                 <Printer className="w-4 h-4" />
                 <span>Print</span>
               </button>
             </div>
 
-            {/* Table */}
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b">
-                  <th className="w-8 pb-3"></th>
-                  <th className="pb-3 text-black">Index</th>
-                  <th className="pb-3 text-black">Name</th>
-                  <th className="pb-3 text-black">Type</th>
-                  <th className="pb-3 text-black">Qty</th>
-                  <th className="pb-3 text-center text-black">Today's Deal</th>
-                  <th className="pb-3 text-center text-black">Featured</th>
-                  <th className="pb-3 text-center text-black">Options</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentProducts.map((product, index) => (
-                  <tr key={product.id} className="border-b hover:bg-gray-50">
-                    <td className="py-4"></td>
-                    <td className="py-4 text-sm text-black">
-                      {currentPage === 1 ? index + 1 : index + 7}
-                    </td>
-                    <td className="py-4">
-                      <div className="flex items-center space-x-3">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-12 h-12 object-cover rounded"
-                        />
-                        <span className="text-sm font-medium text-black">
-                          {product.name}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-4 text-sm text-black">{product.type}</td>
-                    <td className="py-4 text-sm text-black">
-                      {product.quantity}
-                    </td>
-                    <td className="py-4 text-center">
-                      <div className="flex justify-center items-center">
-                        <div
-                          className={`w-12 h-6 rounded-full ${
-                            product.isTodaysDeal
-                              ? "bg-green-500"
-                              : "bg-gray-200"
-                          } relative`}
-                          onClick={() => toggleTodaysDeal(product.id)}
-                        >
-                          <div
-                            className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${
-                              product.isTodaysDeal
-                                ? "translate-x-6"
-                                : "translate-x-1"
-                            }`}
-                          />
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-4 text-center">
-                      <div className="flex justify-center items-center">
-                        <div
-                          className={`w-12 h-6 rounded-full ${
-                            product.isFeatured ? "bg-green-500" : "bg-gray-200"
-                          } relative`}
-                          onClick={() => toggleFeatured(product.id)}
-                        >
-                          <div
-                            className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${
-                              product.isFeatured
-                                ? "translate-x-6"
-                                : "translate-x-1"
-                            }`}
-                          />
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-4 text-center">
-                      <div className="flex justify-center items-center space-x-1">
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-300 shadow hover:bg-gray-100">
-                          <Eye className="w-3 h-3 text-blue-500" />
-                        </div>
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-300 shadow hover:bg-gray-100">
-                          <Edit className="w-3 h-3 text-yellow-500" />
-                        </div>
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-300 shadow hover:bg-gray-100">
-                          <Copy className="w-3 h-3 text-green-500" />
-                        </div>
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-300 shadow hover:bg-gray-100">
-                          <Trash className="w-3 h-3 text-red-500" />
-                        </div>
-                      </div>
-                    </td>
+           
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-left">
+                <thead>
+                  <tr className="border-b">
+                    <th className="w-8 pb-3"></th>
+                    <th className="pb-3 text-black">Index</th>
+                    <th className="pb-3 text-black">Name</th>
+                    <th className="pb-3 text-black">Type</th>
+                    <th className="pb-3 text-black">Qty</th>
+                    <th className="pb-3 text-center text-black">Today's Deal</th>
+                    <th className="pb-3 text-center text-black">Featured</th>
+                    <th className="pb-3 text-center text-black">Options</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {currentProducts.map((product, index) => (
+                    <tr key={product.id} className="border-b hover:bg-gray-50">
+                      <td className="py-4"></td>
+                      <td className="py-4 text-sm text-black">
+                        {currentPage === 1 ? index + 1 : index + 7}
+                      </td>
+                      <td className="py-4">
+                        <div className="flex items-center space-x-3">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-12 h-12 object-cover rounded"
+                          />
+                          <span className="text-sm font-medium text-black">
+                            {product.name}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-4 text-sm text-black">{product.type}</td>
+                      <td className="py-4 text-sm text-black">
+                        {product.quantity}
+                      </td>
+                      <td className="py-4 text-center">
+                        <div className="flex justify-center items-center">
+                          <div
+                            className={`w-12 h-6 rounded-full ${
+                              product.isTodaysDeal
+                                ? "bg-green-500"
+                                : "bg-gray-200"
+                            } relative`}
+                            onClick={() => toggleTodaysDeal(product.id)}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${
+                                product.isTodaysDeal
+                                  ? "translate-x-6"
+                                  : "translate-x-1"
+                              }`}
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 text-center">
+                        <div className="flex justify-center items-center">
+                          <div
+                            className={`w-12 h-6 rounded-full ${
+                              product.isFeatured ? "bg-green-500" : "bg-gray-200"
+                            } relative`}
+                            onClick={() => toggleFeatured(product.id)}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${
+                                product.isFeatured
+                                  ? "translate-x-6"
+                                  : "translate-x-1"
+                              }`}
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 text-center">
+                        <div className="flex justify-center items-center space-x-1">
+                          {/* Edit Icon with Tooltip */}
+                          <div className="relative group">
+                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-300 shadow hover:bg-gray-100">
+                              <Edit className="w-3 h-3 text-yellow-500" />
+                            </div>
+                            <div className="absolute left-1/2 transform -translate-x-1/2 translate-y-1 bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              Edit
+                            </div>
+                          </div>
+                          {/* Delete Icon with Tooltip */} 
+                          <div className="relative group">
+                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-300 shadow hover:bg-gray-100">
+                              <Trash className="w-3 h-3 text-red-500" />
+                            </div>
+                            <div className="absolute left-1/2 transform -translate-x-1/2 translate-y-1 bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              Delete
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
             {/* Pagination */}
             <div className="flex justify-center items-center space-x-4 mt-6">
@@ -379,6 +377,6 @@ const ProductManagement = () => {
       </div>
     </div>
   );
-};
+};     
 
 export default ProductManagement;

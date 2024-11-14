@@ -44,6 +44,7 @@ const Resetpassword = () => {
             />
           </div>
 
+
           <div className="mb-4">
             <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium">
               Confirm Password
@@ -68,6 +69,8 @@ const Resetpassword = () => {
           >
            Save
           </button>
+
+          
         </form>
       </div>
     </div>
